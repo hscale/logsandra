@@ -25,11 +25,10 @@ class CassandraClient(object):
     
     def __init__(self, ident, host, port, timeout):
         self.ident = ident
-        self.client = pycassa.connect(['%s:%s' % (host, port)], timeout=int(timeout))
+        self.client = pycassa.connect(keyspace='logsandra', servers=['%s:%s' % (host, port)], timeout=int(timeout))
 
-        self.cf_entries = pycassa.ColumnFamily(self.client, 'logsandra', 'entries')
-        self.cf_by_date = pycassa.ColumnFamily(self.client, 'logsandra', 'by_date', dict_class=OrderedDict)
-        self.cf_categories = pycassa.ColumnFamily(self.client, 'logsandra', 'categories', dict_class=OrderedDict)
+        self.cf_entries = pycassa.ColumnFamily(self.client, 'entries')
+        self.cf_by_date = pycassa.ColumnFamily(self.client, 'by_date', dict_class=OrderedDict, autopack_names=False)
 
 
 class LogEntry(object):
@@ -45,10 +44,10 @@ class LogEntry(object):
         date = date.replace(tzinfo=None)
 
         key = uuid.uuid1()
-        self.client.cf_entries.insert(str(key.hex), {'ident': str(self.client.ident), 'source': source, 'date': date.strftime('%Y-%m-%d %H:%M:%S'), 'entry': str(entry)})
+        self.client.cf_entries.insert(str(key), {'ident': str(self.client.ident), 'source': source, 'date': date.strftime('%Y-%m-%d %H:%M:%S'), 'entry': str(entry)})
 
         for keyword in keywords:
-            self.client.cf_by_date.insert(str(keyword), {to_long(date): str(key.hex)})
+            self.client.cf_by_date.insert(str(keyword), {to_long(date): str(key)})
 
         return True
 
