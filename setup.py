@@ -12,14 +12,14 @@ setup(
     author='',
     author_email='',
     url='',
-    install_requires=[
+    requires=[
         "Pylons>=1.0",
         "Jinja2",
         "PyYAML",
-        "Pycassa",
+        "pycassa>=0.5.4",
         "python-dateutil",
         "CherryPy>=3.1",
-        "Thrift",
+        "thrift05",
         "ordereddict"
     ],
     setup_requires=["PasteScript>=1.6.3"],
