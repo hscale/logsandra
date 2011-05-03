@@ -4,8 +4,7 @@ import time
 import struct
 import uuid
 import pycassa
-from cassandra.ttypes import NotFoundException
-from ordereddict import OrderedDict
+from pycassa.cassandra.ttypes import NotFoundException
 from collections import defaultdict
 
 __all__ = ['CassandraClient', 'LogEntry']
@@ -22,13 +21,12 @@ def from_long(l):
     return datetime.datetime.fromtimestamp(long_struct.unpack(l)[0] / 1000000)
 
 class CassandraClient(object):
-    
+
     def __init__(self, ident, host, port, timeout):
         self.ident = ident
-        self.client = pycassa.connect(keyspace='logsandra', servers=['%s:%s' % (host, port)], timeout=int(timeout))
-
-        self.cf_entries = pycassa.ColumnFamily(self.client, 'entries')
-        self.cf_by_date = pycassa.ColumnFamily(self.client, 'by_date', dict_class=OrderedDict, autopack_names=False)
+        self.pool = pycassa.ConnectionPool('logsandra', ['%s:%s' % (host, port)], timeout=int(timeout))
+        self.cf_entries = pycassa.ColumnFamily(self.pool, 'entries')
+        self.cf_by_date = pycassa.ColumnFamily(self.pool, 'by_date', autopack_names=False)
 
 
 class LogEntry(object):
@@ -67,7 +65,7 @@ class LogEntry(object):
             hours = datetime.datetime(date.year, date.month, date.day, date.hour, 0, 0)
             month_dict[hours] += 1
             last = key
-        
+
         return [(str(k), month_dict[k]) for k in sorted(month_dict.keys(), reverse=True)], long_struct.unpack(last)[0] - 1
 
 
