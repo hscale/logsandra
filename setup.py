@@ -9,16 +9,16 @@ setup(
     name='logsandra',
     version='0.1',
     description='',
-    author='',
-    author_email='',
-    url='',
+    maintainer='Tyler Hobbs',
+    maintainer_email='tyler@riptano.com',
+    url='http://github.com/thobbs/logsandra',
     requires=[
-        "Pylons>=1.0",
+        "Pylons(>=1.0)",
         "Jinja2",
         "PyYAML",
-        "pycassa>=0.5.4",
-        "python-dateutil",
-        "CherryPy>=3.1",
+        "pycassa(>=1.0.7)",
+        "python_dateutil(>=1.0)",
+        "CherryPy(>=3.1)",
         "thrift05",
         "ordereddict"
     ],
@@ -39,5 +39,5 @@ setup(
 
     [paste.app_install]
     main = pylons.util:PylonsInstaller
-    """,
+    """
 )
