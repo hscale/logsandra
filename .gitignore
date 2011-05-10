@@ -2,3 +2,4 @@
 *.pid
 build
 dist
+logsandra.egg-info
