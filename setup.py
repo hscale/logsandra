@@ -19,8 +19,7 @@ setup(
         "pycassa(>=1.0.7)",
         "python_dateutil(>=1.0)",
         "CherryPy(>=3.1)",
-        "thrift05",
-        "ordereddict"
+        "thrift05"
     ],
     setup_requires=["PasteScript>=1.6.3"],
     packages=find_packages(exclude=['ez_setup']),
