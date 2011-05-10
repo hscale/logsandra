@@ -1,11 +1,13 @@
 Logsandra
 =========
-Logsandra is a log management application written in Python and using Cassandra as back-end.
+Logsandra is a log management application written in Python
+that uses Cassandra for storage.
 
 
 Requirements
 ------------
-Cassandra 0.7.x, Python 2.6/2.7 (not tested with Python 3.x) and the following Python modules:
+Cassandra 0.7.x, Python 2.6/2.7 (not tested with Python 3.x) and the
+following Python packages:
 
     * Pylons >= 1.0
     * Jinja2
@@ -13,15 +15,15 @@ Cassandra 0.7.x, Python 2.6/2.7 (not tested with Python 3.x) and the following P
     * pycassa >= 0.5.4
     * python-dateutil
     * CherryPy >= 3.1
-    * Thrift
-    * ordereddict
+    * Thrift >= 0.5.0
     * Cassandra (not automatically installed during the installation phase)
 
 
 Installation
 ------------
-To install Logsandra you run this command:
+To install Logsandra run:
 
+    pip install -r requirements.txt
     python setup.py install
 
 All Python modules will be automatically installed by that command except for the Cassandra bindings.
@@ -29,24 +31,8 @@ All Python modules will be automatically installed by that command except for th
 
 Configuration
 -------------
-To use Logsandra, you need to configure your Cassandra cluster. Below is the current Keyspace configuration needed by Logsandra:
-
-    <Keyspaces>
-        <Keyspace Name="logsandra">
-            <ColumnFamily Name="entries" CompareWith="BytesType" />
-            <ColumnFamily Name="by_date" CompareWith="LongType" />
-            <ColumnFamily Name="by_date_data" CompareWith="LongType" />
-            <ColumnFamily Name="categories" CompareWith="UTF8Type" />
-          <ReplicaPlacementStrategy>org.apache.cassandra.locator.RackUnawareStrategy</ReplicaPlacementStrategy>
-          <ReplicationFactor>3</ReplicationFactor>
-          <EndPointSnitch>org.apache.cassandra.locator.EndPointSnitch</EndPointSnitch>
-        </Keyspace>
-    </Keyspaces>
-
-(In Cassandra 0.7 and higher you will not need to change the Keyspace configuration manually, but as for now Cassandra 0.7 is in development and not supported by Logsandra)
-
-
-The main configuration file for Logsandra is logsandra.yaml, the format is yaml. Below is a list of configuration variables (including type and optional/required):
+The main configuration file for Logsandra is logsandra.yaml.
+Below is a list of configuration variables (including type and optional/required):
 
     ident               identity of the logsandra server [String, Optional/Discovery]
 
@@ -65,12 +51,16 @@ The main configuration file for Logsandra is logsandra.yaml, the format is yaml.
         name            name of the parser [String, Required]
         ...             arguments, see specific parser [Depends, Optional]
 
-Logsandra is built on Pylons and therefore a Pylons configuration file should be present for Logsandras web service to work.
+Logsandra is built on Pylons and therefore a Pylons
+configuration file should be present for Logsandra's web service
+to work.
 
 
 Usage
 -----
-Logsandra consists of two main scripts, which both acts as a daemon, below is the usage pattern:
+Logsandra consists of two main scripts, both of which act as daemons.
+
+Usage:
 
     python logsandra-httpd.py [options] start|stop|restart
     python logsandra-monitord.py [options] start|stop|restart
@@ -80,16 +70,17 @@ If you want a list of options invoke either one these commands:
     python logsandra-httpd.py --help
     python logsandra-monitord.py --help
 
-An example setup is to run logsandra-httpd on one server and logsandra-monitord on all servers producing log files. Logsandra-monitord will send the data to the specified Cassandra Cluster. 
+A typical setup is to run logsandra-httpd on one server and
+logsandra-monitord on all servers producing log files.
+logsandra-monitord store the logs in the Cassandra cluster. 
 
 
-Create your own parser
+Create Your Own Parser
 ----------------------
-To create your own Logsandra parser you need to create a python file in this directory:
+You can create your own Logsandra parser by adding a module
+to the logsandra.monitor.parsers package.
 
-    logsandra/monitor/parsers/
-
-The name of the file should be in lower case and end with '.py', an example of a files content (the filename is foo.py):
+An example parser:
 
     from logsandra.monitor.parsers import BaseParser
 
@@ -99,4 +90,5 @@ The name of the file should be in lower case and end with '.py', an example of a
             keywords = []
             return self.log_entries.add(date=date, entry=line, source=source, keywords=keywords)
 
-A better example is to study how existing parsers work in logsandra/monitor/parsers/ directory. 
+You should also look at logsandra/monitor/parsers/ for more
+parser examples.
