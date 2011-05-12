@@ -5,7 +5,7 @@ from pylons.decorators import jsonify
 from pylons.controllers.util import abort, redirect
 
 from logsandra.lib.base import BaseController, render
-from logsandra.model import LogEntry, CassandraClient
+from logsandra.model.client import CassandraClient
 
 log = logging.getLogger(__name__)
 
@@ -20,15 +20,13 @@ class GraphController(BaseController):
 
     @jsonify
     def ajax(self):
-        cassandra_client = CassandraClient(config['ident'], config['cassandra_host'], config['cassandra_port'], config['cassandra_timeout'])
-        log_entries = LogEntry(cassandra_client)
-
+        client = CassandraClient(config['ident'], config['cassandra_host'], config['cassandra_port'], config['cassandra_timeout'])
         keyword = request.GET['keyword']
-        column_next = ''
-        if 'next' in request.GET and request.GET['next']:
-            column_next = long(request.GET['next'])
+        end_date = ''
+        if 'next' in request.GET and request.GET['next']
+            end_date = long(request.GET['next'])
 
-        return {'result': log_entries.get_date_count(keyword, column_next=column_next, column_count=250)}
-        
+        return {'result': client.get_date_count(keyword, end_date=end_date, count=250)}
+
     def error(self):
         return 'Error, could not parse date'

@@ -8,5 +8,4 @@ sys = SystemManager()
 sys.create_keyspace(KS, 1)
 
 # Create column families
-sys.create_column_family(KS, 'entries')
-sys.create_column_family(KS, 'by_date', LONG_TYPE)
+sys.create_column_family(KS, 'keyword', comparator_type=TIME_UUID_TYPE)
