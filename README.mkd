@@ -3,9 +3,7 @@ Logsandra
 Logsandra is a log management application written in Python
 that uses Cassandra for storage.
 
-License
--------
-Logsandra is open source under the [MIT license](http://www.opensource.org/licenses/mit-license.php). See LICENSE for more info.
+The project is open source under the [MIT license](http://www.opensource.org/licenses/mit-license.php). See LICENSE for more info.
 
 Requirements
 ------------
