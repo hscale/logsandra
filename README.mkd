@@ -7,8 +7,9 @@ The project is open source under the [MIT license](http://www.opensource.org/lic
 
 Requirements
 ------------
-Cassandra 0.7.x, Python 2.6/2.7 (not tested with Python 3.x) and the
-following Python packages:
+Logsandra works with Cassandra 0.7 or 0.8.
+
+The following Python packages are required:
 
     * Pylons >= 1.0
     * Jinja2
@@ -29,6 +30,7 @@ To install Logsandra run:
 
 All Python modules will be automatically installed by that command except for the Cassandra bindings.
 
+To generate the keyspace and column family needed by logsandra, run scripts/create_keyspace.py.
 
 Configuration
 -------------
