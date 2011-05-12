@@ -23,7 +23,7 @@ class GraphController(BaseController):
         client = CassandraClient(config['ident'], config['cassandra_host'], config['cassandra_port'], config['cassandra_timeout'])
         keyword = request.GET['keyword']
         end_date = ''
-        if 'next' in request.GET and request.GET['next']
+        if 'next' in request.GET and request.GET['next']:
             end_date = long(request.GET['next'])
 
         return {'result': client.get_date_count(keyword, end_date=end_date, count=250)}
