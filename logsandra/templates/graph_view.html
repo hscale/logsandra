@@ -9,7 +9,7 @@
     function updateChart(keyword, next, data, chart) {
         jQuery.getJSON('{{ url(controller='graph', action='ajax') }}', {'keyword': keyword, 'next': next}, function(result) {
             if(result.result[0].length > 0) { 
-                data.addRows(result.result[0])
+                data.addRows(result.result[0]);
                 data.sort({column: 0});
                 chart.draw(data, {width: 800, height: 480, title: ''});
                 updateChart(keyword, result.result[1], data, chart)
@@ -27,7 +27,8 @@
 
         var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
 
-        updateChart({{ c.keyword }}, '', data, chart);
+        var k = "{{ c.keyword }}";
+        updateChart(k, '', data, chart);
 
         jQuery('#loading_div').html('<img src="{{ url('/loading.gif') }}" />');
     }
