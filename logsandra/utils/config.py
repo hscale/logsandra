@@ -1,4 +1,5 @@
 import yaml
+import os
 
 def parse(config_file):
     file_handler = open(config_file)
@@ -15,11 +16,12 @@ def parse(config_file):
     if 'httpd_address' not in config:
         config['httpd_address'] = '0.0.0.0'
 
-    if 'httpd_port' not in config: 
+    if 'httpd_port' not in config:
         config['httpd_port'] = 5000
 
+    default_config = os.path.join(os.path.dirname(__file__), '..', '..', 'conf', 'development.ini')
     if 'httpd_config' not in config:
-        config['httpd_config'] = 'development.ini'
+        config['httpd_config'] = default_config
 
 
     if 'cassandra_address' not in config:

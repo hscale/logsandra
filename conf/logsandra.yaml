@@ -4,7 +4,7 @@
 # Web service
 httpd_host: '0.0.0.0'
 httpd_port: '5000'
-httpd_config: 'development.ini'
+httpd_config: 'conf/development.ini'
 
 # Cassandra cluster to connect to 
 cassandra_host: 'localhost'

@@ -21,14 +21,14 @@ class Application(Daemon):
 
 if __name__ == '__main__':
 
-    default_working_directory = os.curdir
-    default_config_file = os.path.join(default_working_directory, 'logsandra.yaml')
+    default_working_dir = os.path.abspath(os.path.dirname(__file__))
+    default_config_file = os.path.join(default_working_dir, 'conf', 'logsandra.yaml')
 
     usage = 'usage: %prog [options] start|stop|restart'
     parser = optparse.OptionParser(usage=usage)
     parser.add_option('--config-file', dest='config_file', metavar='FILE', default=default_config_file)
-    parser.add_option('--working-directory', dest='working_directory', metavar='DIRECTORY', default=default_working_directory)
-    parser.add_option('--pid', dest='pid_file', metavar='FILE', default=os.path.join(default_working_directory, 'logsandra-monitord.pid'))
+    parser.add_option('--working-directory', dest='working_directory', metavar='DIRECTORY', default=default_working_dir)
+    parser.add_option('--pid', dest='pid_file', metavar='FILE', default=os.path.join(default_working_dir, 'logsandra-monitord.pid'))
     parser.add_option('--application-data-directory', dest='application_data_directory', default=utils.application_data_directory('logsandra'))
     (options, args) = parser.parse_args()
 
