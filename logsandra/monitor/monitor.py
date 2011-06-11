@@ -10,7 +10,7 @@ import imp
 # Local imports
 from logsandra.monitor.watchers import Watcher
 from logsandra.monitor.parsers.clf import ClfParser
-from logsandra.model import CassandraClient, LogEntry
+from logsandra.model.client import CassandraClient
 
 
 class Monitor(object):
@@ -18,20 +18,23 @@ class Monitor(object):
     def __init__(self, settings, tail=False):
         self.logger = logging.getLogger('logsandra.monitord')
         self.settings = settings
-        self.client = CassandraClient(self.settings['ident'], self.settings['cassandra_address'], self.settings['cassandra_port'], self.settings['cassandra_timeout'])
+        self.client = CassandraClient(settings['ident'], settings['cassandra_address'],
+                                      settings['cassandra_port'], settings['cassandra_timeout'])
 
         self.tail = tail
         self.seek_position = {}
 
         self.parsers = {}
-        log_entry = LogEntry(self.client)
         parsers_path = os.path.join(os.path.dirname(imp.find_module('logsandra/monitor/')[1]), 'parsers/')
-        parsers_files = [filename[:-3] for filename in os.listdir(parsers_path) if filename.endswith('.py') and not filename.startswith('__')]
+        parsers_files = []
+        for filename in os.listdir(parsers_path):
+            if filename.endswith('.py') and not filename.startswith('__'):
+                parsers_files.append(filename[:-3])
         parsers_temp = __import__('logsandra.monitor.parsers', globals(), locals(), parsers_files, -1)
         for filename in parsers_files:
             module = getattr(parsers_temp, filename)
             classname = '%sParser' % (filename.capitalize())
-            self.parsers[filename] = getattr(module, classname)(log_entry)
+            self.parsers[filename] = getattr(module, classname)(self.client)
 
     def run(self):
         self.logger.debug('Starting watcher')

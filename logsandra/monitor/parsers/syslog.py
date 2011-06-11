@@ -8,7 +8,6 @@ class SyslogParser(BaseParser):
     def parse(self, line, source, data):
         elements = line.split(' ')
 
-
         date = ' '.join(elements[0:3])
         date = dateutil.parser.parse(date, fuzzy=True)
 
@@ -36,4 +35,4 @@ class SyslogParser(BaseParser):
         for c in content:
             keywords.append(c)
 
-        return self.log_entries.add(date=date, entry=line, source=source, keywords=keywords)
+        return self.client.add_log(date=date, entry=line, source=source, keywords=keywords)

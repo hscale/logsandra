@@ -60,7 +60,7 @@ class StandardWatcher(object):
                     filename = os.path.abspath(os.path.expanduser(entity['path']))
                     yield filename, entity
                 else:
-                    raise Error('Invalid path, cannot monitor it')
+                    raise Exception('Invalid path, cannot monitor it')
 
     def _rescan(self):
         tempfiles = {}

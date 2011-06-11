@@ -73,4 +73,4 @@ class ClfParser(BaseParser):
 
         date = dateutil.parser.parse(result['time'], fuzzy=True)
 
-        return self.log_entries.add(date=date, entry=line, source=source, keywords=keywords)
+        return self.client.add_log(date=date, entry=line, source=source, keywords=keywords)
