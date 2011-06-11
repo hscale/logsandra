@@ -46,6 +46,9 @@ if __name__ == '__main__':
     if len(args) == 1:
         if args[0] == 'start':
             application.start()
+        if args[0] == 'start-fg':
+            logger.addHandler(logging.StreamHandler())
+            application.run()
         elif args[0] == 'stop':
             application.stop()
         elif args[0] == 'restart':
