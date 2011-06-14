@@ -18,7 +18,7 @@ class Monitor(object):
     def __init__(self, settings, tail=False):
         self.logger = logging.getLogger('logsandra.monitord')
         self.settings = settings
-        self.client = CassandraClient(settings['ident'], settings['cassandra_address'],
+        self.client = CassandraClient(settings['ident'], settings['cassandra_host'],
                                       settings['cassandra_port'], settings['cassandra_timeout'])
 
         self.tail = tail

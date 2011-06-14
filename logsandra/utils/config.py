@@ -24,8 +24,8 @@ def parse(config_file):
         config['httpd_config'] = default_config
 
 
-    if 'cassandra_address' not in config:
-        config['cassandra_address'] = 'localhost'
+    if 'cassandra_host' not in config:
+        config['cassandra_host'] = 'localhost'
 
     if 'cassandra_port' not in config:
         config['cassandra_port'] = '9160'
