@@ -91,7 +91,7 @@ An example parser:
         def parse(self, line, source, data):
             date = None
             keywords = []
-            return self.log_entries.add(date=date, entry=line, source=source, keywords=keywords)
+            return self.client.add_log(date=date, entry=line, source=source, keywords=keywords)
 
 You should also look at logsandra/monitor/parsers/ for more
 parser examples.
